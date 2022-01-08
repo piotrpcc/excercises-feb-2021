@@ -8,6 +8,8 @@ public class Multithreading
                 }
     };
 
+
+
         Thread thread1 = new Thread(runnable);
         Thread thread2 = new Thread(runnable);
         Thread thread3 = new Thread(runnable);
@@ -21,7 +23,7 @@ public class Multithreading
         thread3.join();
 
         System.out.println(counter);
-        System.out.println(counter);
+
         System.out.println(counter);
     }
 }
