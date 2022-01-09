@@ -11,16 +11,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.codecool.feb2021pl.springdemo.Employee.Employee;
+
 @Controller
 public class ExampleController {
 
-    private EmployeeDao employeeDao;
+    private final EmployeeDao employeeDao;
+    private final EmployeeFactory employeeFactory;
 
     // Don't do this!! SimpleDateFormat is not thread safe!
-    private DateFormat timeFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+    private final DateFormat timeFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
 
-    public ExampleController(EmployeeDao employeeDao) {
+    public ExampleController(EmployeeDao employeeDao, EmployeeFactory employeeFactory) {
         this.employeeDao = employeeDao;
+        this.employeeFactory = employeeFactory;
     }
 
     @GetMapping("/current_date")
@@ -57,6 +61,19 @@ public class ExampleController {
     @GetMapping("/new_employee")
     public String newEmployee() {
         return "new_employee.html";
+    }
+
+    @PostMapping("/new_employee")
+    public String newEmployee(String name) {
+
+        Employee employee = employeeFactory.create(name);
+//        employee = Employee("aaa");
+//        employee = new Employee("aaa");
+//        employee = employeeFactory.create(name);
+
+        employeeDao.save(employee);
+
+        return "redirect:/employees";
     }
 
 }
